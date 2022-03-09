@@ -1,5 +1,5 @@
-{{- define "self-signed.cert" }}
-{{- $expire := (int $.Values.admissionWebhook.generatedCert.expireDate) }}
+{{- define "generatedCert" }}
+{{- $expire := (int $.Values.admissionWebHooks.generatedCert.expireDate) }}
 {{- $ca := genCA (include "actions-runner-controller.name" .) $expire }}
 {{- $domain1 := printf "%s.%s.svc" (include "actions-runner-controller.webhookServiceName" .) $.Release.Namespace }}
 {{- $domain2 := printf "%s.%s.svc.cluster.local" (include "actions-runner-controller.webhookServiceName" .) $.Release.Namespace }}

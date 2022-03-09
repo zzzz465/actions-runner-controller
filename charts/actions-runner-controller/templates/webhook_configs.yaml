@@ -1,6 +1,6 @@
 
 ---
-{{- $tls := fromYaml (include "self-signed.cert" .) }}
+{{- $tls := fromYaml (include "generatedCert" .) }}
 {{- if .Values.admissionWebHooks.generatedCert.enabled }}
 apiVersion: v1
 kind: Secret
