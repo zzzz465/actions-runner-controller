@@ -163,19 +163,14 @@ scope:
 certManagerEnabled: true
 
 admissionWebHooks:
-  {}
   #caBundle: "Ci0tLS0tQk...<base64-encoded PEM bundle containing the CA that signed the webhook's serving certificate>...tLS0K"
+  generatedCert:
+    enabled: true
+    expireDate: 365
 
 # There may be alternatives to setting `hostNetwork: true`, see
 # https://github.com/actions-runner-controller/actions-runner-controller/issues/1005#issuecomment-993097155
 #hostNetwork: true
-
-admissionWebhook:
-  certManager:
-    enabled: true
-  generatedCert:
-    enabled: false
-    expireDate: 365
 
 githubWebhookServer:
   enabled: false

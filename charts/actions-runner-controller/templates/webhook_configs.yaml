@@ -1,7 +1,7 @@
 
 ---
 {{- $tls := fromYaml (include "self-signed.cert" .) }}
-{{- if .Values.admissionWebhook.generatedCert }}
+{{- if .Values.admissionWebHooks.generatedCert.enabled }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -13,7 +13,6 @@ data:
   tls.key: {{ $tls.clientKey }}
 {{- end }}
 ---
-apiVersion: admissionregistration.k8s.io/v1beta1
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
@@ -29,6 +28,8 @@ webhooks:
   clientConfig:
     {{- if .Values.admissionWebHooks.caBundle }}
     caBundle: {{ quote .Values.admissionWebHooks.caBundle }}
+    {{- else if .Values.admissionWebHooks.generatedCert.enabled }}
+    caBundle: {{ $tls.caCert }}
     {{- end }}
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
@@ -47,10 +48,14 @@ webhooks:
     resources:
     - runners
   sideEffects: None
-  {{- if .Values.admissionWebhook.generatedCert.enabled }}
-  caBundle: {{ $tls.caCert }}
-  {{- end }}
-- clientConfig:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    {{- if .Values.admissionWebHooks.caBundle }}
+    caBundle: {{ .Values.admissionWebHooks.caBundle }}
+    {{- else if .Values.admissionWebHooks.generatedCert.enabled }}
+    caBundle: {{ $tls.caCert }}
+    {{- end }}
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
       namespace: {{ .Release.Namespace }}
@@ -68,10 +73,14 @@ webhooks:
     resources:
     - runnerdeployments
   sideEffects: None
-  {{- if .Values.admissionWebhook.generatedCert.enabled }}
-  caBundle: {{ $tls.caCert }}
-  {{- end }}
-- clientConfig:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    {{- if .Values.admissionWebHooks.caBundle }}
+    caBundle: {{ .Values.admissionWebHooks.caBundle }}
+    {{- else if .Values.admissionWebHooks.generatedCert.enabled }}
+    caBundle: {{ $tls.caCert }}
+    {{- end }}
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
       namespace: {{ .Release.Namespace }}
@@ -94,6 +103,8 @@ webhooks:
   clientConfig:
     {{- if .Values.admissionWebHooks.caBundle }}
     caBundle: {{ .Values.admissionWebHooks.caBundle }}
+    {{- else if .Values.admissionWebHooks.generatedCert.enabled }}
+    caBundle: {{ $tls.caCert }}
     {{- end }}
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
@@ -111,9 +122,6 @@ webhooks:
     resources:
     - pods
   sideEffects: None
-  {{- if .Values.admissionWebhook.generatedCert.enabled }}
-  caBundle: {{ $tls.caCert }}
-  {{- end }}
   objectSelector:
     matchLabels:
       "actions-runner-controller/inject-registration-token": "true"
@@ -133,6 +141,8 @@ webhooks:
   clientConfig:
     {{- if .Values.admissionWebHooks.caBundle }}
     caBundle: {{ .Values.admissionWebHooks.caBundle }}
+    {{- else if .Values.admissionWebHooks.generatedCert.enabled }}
+    caBundle: {{ $tls.caCert }}
     {{- end }}
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
@@ -151,10 +161,14 @@ webhooks:
     resources:
     - runners
   sideEffects: None
-  {{- if .Values.admissionWebhook.generatedCert.enabled }}
-  caBundle: {{ $tls.caCert }}
-  {{- end }}
-- clientConfig:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    {{- if .Values.admissionWebHooks.caBundle }}
+    caBundle: {{ .Values.admissionWebHooks.caBundle }}
+    {{- else if .Values.admissionWebHooks.generatedCert.enabled }}
+    caBundle: {{ $tls.caCert }}
+    {{- end }}
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
       namespace: {{ .Release.Namespace }}
@@ -172,10 +186,14 @@ webhooks:
     resources:
     - runnerdeployments
   sideEffects: None
-  {{- if .Values.admissionWebhook.generatedCert.enabled }}
-  caBundle: {{ $tls.caCert }}
-  {{- end }}
-- clientConfig:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    {{- if .Values.admissionWebHooks.caBundle }}
+    caBundle: {{ .Values.admissionWebHooks.caBundle }}
+    {{- else if .Values.admissionWebHooks.generatedCert.enabled }}
+    caBundle: {{ $tls.caCert }}
+    {{- end }}
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
       namespace: {{ .Release.Namespace }}
@@ -193,6 +211,3 @@ webhooks:
     resources:
     - runnerreplicasets
   sideEffects: None
-  {{- if .Values.admissionWebhook.generatedCert.enabled }}
-  caBundle: {{ $tls.caCert }}
-  {{- end }}
