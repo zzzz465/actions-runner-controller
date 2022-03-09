@@ -170,6 +170,13 @@ admissionWebHooks:
 # https://github.com/actions-runner-controller/actions-runner-controller/issues/1005#issuecomment-993097155
 #hostNetwork: true
 
+admissionWebhook:
+  certManager:
+    enabled: true
+  generatedCert:
+    enabled: false
+    expireDate: 365
+
 githubWebhookServer:
   enabled: false
   replicaCount: 1
