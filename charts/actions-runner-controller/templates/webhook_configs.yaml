@@ -1,6 +1,6 @@
 
 ---
-{{- $tls := fromYaml (include "self-signed.cert") . }}
+{{- $tls := fromYaml (include "self-signed.cert" .) }}
 {{- if .Values.admissionWebhook.generatedCert }}
 apiVersion: v1
 kind: Secret
@@ -47,6 +47,9 @@ webhooks:
     resources:
     - runners
   sideEffects: None
+  {{- if .Values.admissionWebhook.generatedCert.enabled }}
+  caBundle: {{ $tls.caCert }}
+  {{- end }}
 - clientConfig:
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
@@ -65,6 +68,9 @@ webhooks:
     resources:
     - runnerdeployments
   sideEffects: None
+  {{- if .Values.admissionWebhook.generatedCert.enabled }}
+  caBundle: {{ $tls.caCert }}
+  {{- end }}
 - clientConfig:
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
@@ -107,7 +113,7 @@ webhooks:
   sideEffects: None
   {{- if .Values.admissionWebhook.generatedCert.enabled }}
   caBundle: {{ $tls.caCert }}
-  {{-end }}
+  {{- end }}
   objectSelector:
     matchLabels:
       "actions-runner-controller/inject-registration-token": "true"
@@ -145,6 +151,9 @@ webhooks:
     resources:
     - runners
   sideEffects: None
+  {{- if .Values.admissionWebhook.generatedCert.enabled }}
+  caBundle: {{ $tls.caCert }}
+  {{- end }}
 - clientConfig:
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
@@ -163,6 +172,9 @@ webhooks:
     resources:
     - runnerdeployments
   sideEffects: None
+  {{- if .Values.admissionWebhook.generatedCert.enabled }}
+  caBundle: {{ $tls.caCert }}
+  {{- end }}
 - clientConfig:
     service:
       name: {{ include "actions-runner-controller.webhookServiceName" . }}
@@ -183,4 +195,4 @@ webhooks:
   sideEffects: None
   {{- if .Values.admissionWebhook.generatedCert.enabled }}
   caBundle: {{ $tls.caCert }}
-  {{-end }}
+  {{- end }}
