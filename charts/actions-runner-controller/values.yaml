@@ -165,7 +165,7 @@ certManagerEnabled: true
 admissionWebHooks:
   #caBundle: "Ci0tLS0tQk...<base64-encoded PEM bundle containing the CA that signed the webhook's serving certificate>...tLS0K"
   generatedCert:
-    enabled: true
+    enabled: false
     expireDate: 365
 
 # There may be alternatives to setting `hostNetwork: true`, see
